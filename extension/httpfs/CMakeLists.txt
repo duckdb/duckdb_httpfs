@@ -32,10 +32,10 @@ if(MINGW)
   set(OPENSSL_USE_STATIC_LIBS TRUE)
 endif()
 
-if(EMSCRIPTEN)
-else()
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
+if(EMSCRIPTEN)
+else()
 target_link_libraries(httpfs_loadable_extension duckdb_mbedtls
                       ${OPENSSL_LIBRARIES})
 target_link_libraries(httpfs_extension duckdb_mbedtls ${OPENSSL_LIBRARIES})
