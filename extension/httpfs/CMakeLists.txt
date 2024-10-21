@@ -32,6 +32,8 @@ if(MINGW)
   set(OPENSSL_USE_STATIC_LIBS TRUE)
 endif()
 
+if(EMSCRIPTEN)
+else()
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 target_link_libraries(httpfs_loadable_extension duckdb_mbedtls
@@ -42,6 +44,7 @@ if(MINGW)
   find_package(ZLIB)
   target_link_libraries(httpfs_loadable_extension ZLIB::ZLIB -lcrypt32)
   target_link_libraries(httpfs_extension ZLIB::ZLIB -lcrypt32)
+endif()
 endif()
 
 install(
