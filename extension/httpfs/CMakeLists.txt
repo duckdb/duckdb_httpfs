@@ -60,5 +60,5 @@ endif()
 add_custom_command(
         TARGET httpfs_loadable_extension POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
-                "${CMAKE_CURRENT_BINARY_DIR}/httpfs.duckdb_extension${FILE_SUFFIX}"
-                "${CMAKE_DUCKDB_HTTPFS_BASE_FOLDER}/httpfs.duckdb_extension${FILE_SUFFIX}")
+                ${CMAKE_CURRENT_BINARY_DIR}\\httpfs.duckdb_extension${FILE_SUFFIX}
+                ${CMAKE_DUCKDB_HTTPFS_BASE_FOLDER}\\httpfs.duckdb_extension${FILE_SUFFIX})
