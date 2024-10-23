@@ -8,7 +8,7 @@ project(HTTPFsExtension)
 
 add_extension_definitions()
 
-include_directories(extension/httpfs/include ../../third_party/httplib ../parquet/include)
+include_directories(extension/httpfs/include ../../third_party/httplib)
 
 build_static_extension(
   httpfs
