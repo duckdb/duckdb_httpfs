@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 2.8.12...3.29)
 
-include_directories(duckdb/third_party/httplib)
-
 set(HTTPFS_BASE_FOLDER "extension/httpfs")
 
 project(HTTPFsExtension)
 
 add_extension_definitions()
 
-include_directories(extension/httpfs/include ../../third_party/httplib)
+include_directories(extension/httpfs/include ${DUCKDB_MODULE_BASE_DIR}/third_party/httplib)
 
 build_static_extension(
   httpfs
