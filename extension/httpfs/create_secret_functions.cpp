@@ -73,7 +73,7 @@ unique_ptr<BaseSecret> CreateS3SecretFunctions::CreateSecretFunctionInternal(Cli
 			} else if (url_compatibility != v) {
 				throw InvalidInputException("Mismatched values of [s3_]url_compatibility_mode setting. Consider removing the secret.");
 			}
-			secret->secret_map["url_compatibility_mode"] = Value::BOOLEAN(v);
+			secret->secret_map["s3_url_compatibility_mode"] = Value::BOOLEAN(v);
 		} else if (lower_name == "s3_url_compatibility_mode") {
 			if (named_param.second.type() != LogicalType::BOOLEAN) {
 				throw InvalidInputException("Invalid type past to secret option: '%s', found '%s', expected: 'BOOLEAN'",
