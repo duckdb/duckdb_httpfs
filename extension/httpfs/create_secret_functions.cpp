@@ -39,6 +39,7 @@ unique_ptr<BaseSecret> CreateS3SecretFunctions::CreateSecretFunctionInternal(Cli
 		secret->secret_map["url_style"] = "path";
 	}
 
+	idx_t url_compatibility = -1;
 	// apply any overridden settings
 	for (const auto &named_param : input.options) {
 		auto lower_name = StringUtil::Lower(named_param.first);
@@ -66,14 +67,31 @@ unique_ptr<BaseSecret> CreateS3SecretFunctions::CreateSecretFunctionInternal(Cli
 				throw InvalidInputException("Invalid type past to secret option: '%s', found '%s', expected: 'BOOLEAN'",
 				                            lower_name, named_param.second.type().ToString());
 			}
-			secret->secret_map["url_compatibility_mode"] = Value::BOOLEAN(named_param.second.GetValue<bool>());
+			const bool v = named_param.second.GetValue<bool>();
+			if (url_compatibility == -1) {
+				url_compatibility = v;
+			} else if (url_compatibility != v) {
+				throw InvalidInputException("Mismatched values of [s3_]url_compatibility_mode setting. Consider removing the secret.");
+			}
+			secret->secret_map["url_compatibility_mode"] = Value::BOOLEAN(v);
+		} else if (lower_name == "s3_url_compatibility_mode") {
+			if (named_param.second.type() != LogicalType::BOOLEAN) {
+				throw InvalidInputException("Invalid type past to secret option: '%s', found '%s', expected: 'BOOLEAN'",
+				                            lower_name, named_param.second.type().ToString());
+			}
+			const bool v = named_param.second.GetValue<bool>();
+			if (url_compatibility == -1) {
+				url_compatibility = v;
+			} else if (url_compatibility != v) {
+				throw InvalidInputException("Mismatched values of [s3_]url_compatibility_mode setting. Consider removing the secret.");
+			}
+			secret->secret_map["s3_url_compatibility_mode"] = Value::BOOLEAN(v);
 		} else if (lower_name == "account_id") {
 			continue; // handled already
 		} else {
 			throw InternalException("Unknown named parameter passed to CreateSecretFunctionInternal: " + lower_name);
 		}
 	}
-
 	return std::move(secret);
 }
 
@@ -91,6 +109,7 @@ void CreateS3SecretFunctions::SetBaseNamedParams(CreateSecretFunction &function,
 	function.named_parameters["url_style"] = LogicalType::VARCHAR;
 	function.named_parameters["use_ssl"] = LogicalType::BOOLEAN;
 	function.named_parameters["url_compatibility_mode"] = LogicalType::BOOLEAN;
+	function.named_parameters["s3_url_compatibility_mode"] = LogicalType::BOOLEAN;
 
 	if (type == "r2") {
 		function.named_parameters["account_id"] = LogicalType::VARCHAR;
