@@ -22,8 +22,8 @@ static void LoadInternal(DatabaseInstance &instance) {
 
 	// Global HTTP config
 	// Single timeout value is used for all 4 types of timeouts, we could split it into 4 if users need that
-	config.AddExtensionOption("http_timeout", "HTTP timeout read/write/connection/retry", LogicalType::UBIGINT,
-	                          Value(30000));
+	config.AddExtensionOption("http_timeout", "HTTP timeout read/write/connection/retry (in seconds)", LogicalType::UBIGINT,
+	                          Value::UBIGINT(HTTPParams::DEFAULT_TIMEOUT_SECONDS));
 	config.AddExtensionOption("http_retries", "HTTP retries on I/O error", LogicalType::UBIGINT, Value(3));
 	config.AddExtensionOption("http_retry_wait_ms", "Time between retries", LogicalType::UBIGINT, Value(100));
 	config.AddExtensionOption("force_download", "Forces upfront download of file", LogicalType::BOOLEAN, Value(false));

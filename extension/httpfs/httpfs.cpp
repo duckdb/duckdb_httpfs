@@ -244,9 +244,9 @@ unique_ptr<duckdb_httplib_openssl::Client> HTTPFileSystem::GetClient(const HTTPP
 		client->set_ca_cert_path(http_params.ca_cert_file.c_str());
 	}
 	client->enable_server_certificate_verification(http_params.enable_server_cert_verification);
-	client->set_write_timeout(http_params.timeout);
-	client->set_read_timeout(http_params.timeout);
-	client->set_connection_timeout(http_params.timeout);
+	client->set_write_timeout(http_params.timeout, http_params.timeout_usec);
+	client->set_read_timeout(http_params.timeout, http_params.timeout_usec);
+	client->set_connection_timeout(http_params.timeout, http_params.timeout_usec);
 	client->set_decompress(false);
 	if (hfh && hfh->http_logger) {
 		client->set_logger(

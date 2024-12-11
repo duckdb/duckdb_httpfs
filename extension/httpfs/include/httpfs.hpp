@@ -37,7 +37,7 @@ public:
 
 struct HTTPParams {
 
-	static constexpr uint64_t DEFAULT_TIMEOUT = 30000; // 30 sec
+	static constexpr uint64_t DEFAULT_TIMEOUT_SECONDS = 30; // 30 sec
 	static constexpr uint64_t DEFAULT_RETRIES = 3;
 	static constexpr uint64_t DEFAULT_RETRY_WAIT_MS = 100;
 	static constexpr float DEFAULT_RETRY_BACKOFF = 4;
@@ -46,7 +46,8 @@ struct HTTPParams {
 	static constexpr bool DEFAULT_ENABLE_SERVER_CERT_VERIFICATION = false;
 	static constexpr uint64_t DEFAULT_HF_MAX_PER_PAGE = 0;
 
-	uint64_t timeout = DEFAULT_TIMEOUT;
+	uint64_t timeout = DEFAULT_TIMEOUT_SECONDS; // seconds component of a timeout
+	uint64_t timeout_usec = 0;                  // usec component of a timeout
 	uint64_t retries = DEFAULT_RETRIES;
 	uint64_t retry_wait_ms = DEFAULT_RETRY_WAIT_MS;
 	float retry_backoff = DEFAULT_RETRY_BACKOFF;
